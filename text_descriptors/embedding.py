@@ -3,10 +3,10 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 
 class WordEmbedding(nn.Module):
-    def __init__(self, texts, lowecase, ngrams_range, max_df, min_df, embedding_dim=300, use_pretrained=False):
+    def __init__(self, texts, lowecase, ngram_range, max_df, min_df, embedding_dim=300, use_pretrained=False):
         super(WordEmbedding, self).__init__()
 
-        self.cv = CountVectorizer(lowercase=lowecase, ngrams_range=ngrams_range, max_df=max_df,
+        self.cv = CountVectorizer(lowercase=lowecase, ngram_range=ngram_range, max_df=max_df,
                                   min_df=min_df, binary=True)
         self.cv.fit_transform(texts)
         num_embeddings = len(self.cv.vocabulary_)

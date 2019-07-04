@@ -2,12 +2,12 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer, Ha
 
 
 class TextDescriptor:
-    def __init__(self, type, texts, lowecase, ngrams_range, max_df, min_df):
+    def __init__(self, type, texts, lowecase, ngram_range, max_df, min_df):
         if type == 'bow':
-            self.descriptor = CountVectorizer(lowercase=lowecase, ngrams_range=ngrams_range, max_df=max_df,
+            self.descriptor = CountVectorizer(lowercase=lowecase, ngram_range=ngram_range, max_df=max_df,
                                               min_df=min_df, binary=True)
         elif type == 'tf-idf':
-            self.descriptor = TfidfVectorizer(lowercase=lowecase, ngram_range=ngrams_range, max_df=max_df,
+            self.descriptor = TfidfVectorizer(lowercase=lowecase, ngram_range=ngram_range, max_df=max_df,
                                               min_df=min_df, norm=None)
         else:
             raise '{} is an unknown type of descriptor'.format(type)
