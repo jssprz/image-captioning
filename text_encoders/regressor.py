@@ -33,10 +33,10 @@ class RNN(nn.Module):
                                batch_first=True, bidirectional=bidirectional)
         elif layer_name == 'gru':
             self.rnn = nn.GRU(input_size=in_size, hidden_size=h_size, num_layers=num_layers, dropout=dropout,
-                              batch_first=True, bidirectional=bidirectional, nonlinearity='tanh')
+                              batch_first=True, bidirectional=bidirectional)
         else:
             self.rnn = nn.RNN(input_size=in_size, hidden_size=h_size, num_layers=num_layers, dropout=dropout,
-                              batch_first=True, bidirectional=bidirectional)
+                              batch_first=True, bidirectional=bidirectional, nonlinearity='tanh')
 
     def __init_hidden(self):
         return torch.zeros(1, 1, self.hidden_size, device=self.device)
