@@ -8,7 +8,7 @@ class WordEmbedding(nn.Module):
 
         self.cv = CountVectorizer(lowercase=lowecase, ngram_range=ngram_range, max_df=max_df,
                                   min_df=min_df, binary=True)
-        self.cv.fit_transform(texts + ['<bos>', '<eos>', '<unk>'])
+        self.cv.fit_transform(list(texts) + ['<bos>', '<eos>', '<unk>'])
         num_embeddings = len(self.cv.vocabulary_)
         self.unk_idx = self.cv.vocabulary_['<unk>']
 
