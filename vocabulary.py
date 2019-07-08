@@ -9,11 +9,14 @@ from collections import Counter
 
 
 class Vocabulary(object):
-    def __init__(self):
+    def __init__(self, lowercase=True, max_df=1, min_df=0):
         self.word2idx = {}
         self.idx2word = {}
         self.word2count = {}
         self.nwords = 0
+        self.lowercase = lowercase
+        self.max_df = max_df
+        self.min_df = min_df
 
     @classmethod
     def from_words(cls, words):
@@ -22,7 +25,7 @@ class Vocabulary(object):
             result.add_word(w)
         return result
 
-    def add_sentences(self, sentences, max_df=1, min_df=0):
+    def add_sentences(self, sentences):
         """
         Get a glossary based on the text of the annotation.
         Words with frequencies lower than threshold will be omitted
@@ -33,14 +36,14 @@ class Vocabulary(object):
             # Segmenting words directly by space
             # tokens = caption.lower().split(' ')
             # Use nltk for word segmentation
-            tokens = nltk.tokenize.word_tokenize(caption.lower())
+            tokens = nltk.tokenize.word_tokenize(caption.lower() if self.lowercase else caption)
             counter.update(tokens)
             if i % 10000 == 0:
                 print('[{}/{}] tokenized the captions.'.format(i, ncaptions))
 
         for i, (w, c) in enumerate(counter.items(), start=self.nwords):
             df = c / ncaptions
-            if min_df <= df <= max_df:  # Skip some low and high frequency words
+            if self.min_df <= df <= self.max_df:  # Skip some low and high frequency words
                 self.word2idx[w] = i
                 self.idx2word[i] = w
                 self.word2count[w] = c
@@ -77,11 +80,11 @@ class Vocabulary(object):
                 removed_words.append(word)
         return removed_words
 
-    def __call__(self, w):
+    def __call__(self, texts):
         """
         Returns the id corresponding to the word
         """
-        return self.word2idx['<unk>'] if w not in self.word2idx else self.word2idx[w]
+        return [[self.word2idx['<unk>'] if w not in self.word2idx else self.word2idx[w] for w in t] for t in texts]
 
     def __len__(self):
         """
