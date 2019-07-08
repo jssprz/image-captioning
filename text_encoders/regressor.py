@@ -39,7 +39,7 @@ class RNN(nn.Module):
                               batch_first=True, bidirectional=bidirectional, nonlinearity='tanh')
 
     def __init_hidden(self):
-        return torch.zeros(1, 1, self.hidden_size, device=self.device)
+        return torch.zeros(1, 1, self.h_size, device=self.device)
 
     def forward(self, seqs_vectors):
         h = self.__init_hidden()
