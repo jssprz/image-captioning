@@ -38,6 +38,8 @@ class RNN(nn.Module):
             self.rnn = nn.RNN(input_size=in_size, hidden_size=h_size, num_layers=num_layers, dropout=dropout,
                               batch_first=True, bidirectional=bidirectional, nonlinearity='tanh')
 
+        self.h_size = h_size
+
     def __init_hidden(self):
         return torch.zeros(1, 1, self.h_size, device=self.device)
 
