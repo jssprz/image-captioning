@@ -40,13 +40,15 @@ class RNN(nn.Module):
 
         self.h_size = h_size
 
-    def __init_hidden(self):
-        return torch.zeros(1, 1, self.h_size, device=self.device)
+    def __init_hidden(self, batch_size):
+        return torch.zeros(4, batch_size, self.h_size, device=self.device)
 
     def forward(self, seqs_vectors):
-        h = self.__init_hidden()
+        batch_size, seq_len, feats = seqs_vectors.size()
         if self.layer_name == 'lstm':
-            h = self.__init_hidden(), self.__init_hidden()
+            h = self.__init_hidden(batch_size), self.__init_hidden(batch_size)
+        else:
+            h = self.__init_hidden(batch_size)
 
         output, h_n = self.rnn(seqs_vectors, h)
 
