@@ -22,15 +22,14 @@ class Vocabulary(object):
             result.add_word(w)
         return result
 
-    def add_sentences(self, sentences, threshold):
+    def add_sentences(self, sentences, max_df=1, min_df=0):
         """
         Get a glossary based on the text of the annotation.
         Words with frequencies lower than threshold will be omitted
         """
         counter = Counter()
         ncaptions = len(sentences)
-        for i, row in enumerate(sentences):
-            caption = row['caption']
+        for i, caption in enumerate(sentences):
             # Segmenting words directly by space
             # tokens = caption.lower().split(' ')
             # Use nltk for word segmentation
@@ -40,7 +39,8 @@ class Vocabulary(object):
                 print('[{}/{}] tokenized the captions.'.format(i, ncaptions))
 
         for i, (w, c) in enumerate(counter.items(), start=self.nwords):
-            if c >= threshold:  # Skip some low frequency words
+            df = c / ncaptions
+            if min_df <= df <= max_df:  # Skip some low and high frequency words
                 self.word2idx[w] = i
                 self.idx2word[i] = w
                 self.word2count[w] = c
