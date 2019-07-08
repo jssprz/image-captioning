@@ -80,7 +80,7 @@ class Vocabulary(object):
                 removed_words.append(word)
         return removed_words
 
-    def __call__(self, texts, len):
+    def __call__(self, texts, max_len):
         """
         Returns the id corresponding to the word
         """
@@ -88,10 +88,10 @@ class Vocabulary(object):
         result = []
         for t in texts:
             tokens = nltk.tokenize.word_tokenize(t.lower() if self.lowercase else t)
-            while len(tokens) < len:
+            while len(tokens) < max_len:
                 tokens.append(self.word2idx['<pad>'])
-            if len(tokens) > len:
-                tokens = tokens[:len]
+            if len(tokens) > max_len:
+                tokens = tokens[:max_len]
             result.append([self.word2idx['<unk>'] if w not in self.word2idx else self.word2idx[w] for w in tokens])
         return result
 
