@@ -44,7 +44,7 @@ class Vocabulary(object):
                 self.word2idx[w] = i
                 self.idx2word[i] = w
                 self.word2count[w] = c
-        self.nwords += len(counter.items())
+                self.nwords += 1
 
     def add_word(self, w):
         """
