@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.functional as F
 
 
 class MLP(nn.Module):
@@ -13,11 +12,12 @@ class MLP(nn.Module):
 
         self.fc1 = nn.Linear(in_size, h_size)
         self.relu1 = nn.ReLU()
+        self.drop_1 = nn.Dropout(p=.2)
         self.fc2 = nn.Linear(h_size, out_size)
         self.relu2 = nn.ReLU()
 
     def forward(self, texts_descriptors):
-        h = self.relu1(self.fc1(texts_descriptors))
+        h = self.drop_1(self.relu1(self.fc1(texts_descriptors)))
         out = self.relu2(self.fc2(h))
         return out
 
@@ -41,7 +41,7 @@ class RNN(nn.Module):
                               batch_first=True, bidirectional=bidirectional, nonlinearity='tanh')
 
         self.h_size = h_size
-        self.num_layers = num_layers
+        self.num_layers = num_layers*2 if bidirectional else num_layers
 
     def __init_hidden(self, batch_size):
         document_rnn_init_h = nn.Parameter(nn.init.xavier_uniform(
@@ -63,6 +63,3 @@ class RNN(nn.Module):
         if self.layer_name == 'lstm':
             return h_n[0]
         return h_n
-
-
-
