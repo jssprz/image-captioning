@@ -39,9 +39,19 @@ class RNN(nn.Module):
                               batch_first=True, bidirectional=bidirectional, nonlinearity='tanh')
 
         self.h_size = h_size
+        self.num_layers = num_layers
 
     def __init_hidden(self, batch_size):
-        return torch.zeros(4, batch_size, self.h_size, device=self.device)
+        document_rnn_init_h = nn.Parameter(nn.init.xavier_uniform(
+            torch.Tensor(self.num_layers, batch_size, self.h_size).type(torch.FloatTensor)),
+                                           requires_grad=True)
+        if self.mode == 'GRU':
+            return document_rnn_init_h
+        elif self.mode == 'LSTM':
+            document_rnn_init_c = nn.Parameter(nn.init.xavier_uniform(
+                torch.Tensor(self.num_layers, batch_size, self.h_size).type(torch.FloatTensor)),
+                                               requires_grad=True)
+            return (document_rnn_init_h, document_rnn_init_c)
 
     def forward(self, seqs_vectors):
         batch_size, seq_len, feats = seqs_vectors.size()
