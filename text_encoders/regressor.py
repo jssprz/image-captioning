@@ -46,12 +46,12 @@ class RNN(nn.Module):
             torch.Tensor(self.num_layers, batch_size, self.h_size).type(torch.FloatTensor)),
                                            requires_grad=True)
         if self.layer_name == 'gru':
-            return document_rnn_init_h
+            return document_rnn_init_h.to(self.device)
         elif self.layer_name == 'lstm':
             document_rnn_init_c = nn.Parameter(nn.init.xavier_uniform(
                 torch.Tensor(self.num_layers, batch_size, self.h_size).type(torch.FloatTensor)),
                                                requires_grad=True)
-            return (document_rnn_init_h, document_rnn_init_c)
+            return (document_rnn_init_h.to(self.device), document_rnn_init_c.to(self.device))
 
     def forward(self, seqs_vectors):
         batch_size, seq_len, feats = seqs_vectors.size()
