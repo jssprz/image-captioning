@@ -12,11 +12,13 @@ class MLP(nn.Module):
         self.out_size = out_size
 
         self.fc1 = nn.Linear(in_size, h_size)
+        self.relu1 = nn.ReLU()
         self.fc2 = nn.Linear(h_size, out_size)
+        self.relu2 = nn.ReLU()
 
     def forward(self, texts_descriptors):
-        h = F.relu(self.fc1(texts_descriptors))
-        out = F.relu(self.fc2(h))
+        h = self.relu1(self.fc1(texts_descriptors))
+        out = self.relu2(self.fc2(h))
         return out
 
 
