@@ -4,22 +4,21 @@ from torch.utils.data import Dataset, DataLoader
 
 
 class ICDataset(Dataset):
-    def __init__(self, images_names, visual_feats, captions):
+    def __init__(self, images_names, visual_feats, captions, captions_feats):
         self.visual_feats = dict(zip(images_names, visual_feats))
         self.captions = captions
+        self.captions_feats = captions_feats
 
     def __getitem__(self, item):
         img_name, caption = self.captions[item]
-        visual_feat = self.visual_feats[img_name]
-
-        return img_name, visual_feat, caption
+        return img_name, self.visual_feats[img_name], caption, self.captions_feats[item]
 
     def __len__(self):
         return len(self.captions)
 
 
-def get_loader(image_names, viusal_feats, captions, batch_size, shuffle, num_workers, pin_memory):
-    dataset = ICDataset(image_names, viusal_feats, captions)
+def get_loader(image_names, viusal_feats, captions, captions_feats, batch_size, shuffle, num_workers, pin_memory):
+    dataset = ICDataset(image_names, viusal_feats, captions, captions_feats)
     return DataLoader(dataset=dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers,
                       pin_memory=pin_memory)
 
