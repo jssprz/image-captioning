@@ -17,4 +17,4 @@ class TextDescriptor:
         self.out_size = len(self.descriptor.vocabulary_)
 
     def transform(self, texts):
-        return self.descriptor.transform(texts)
+        return self.descriptor.transform(texts).toarray()
