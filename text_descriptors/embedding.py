@@ -33,4 +33,4 @@ class WordEmbedding:
                 if len(tokens) > 20:
                     tokens = tokens[:20]
                 result.append([self.embeddings['algo'] if w not in self.embeddings else self.embeddings[w] for w in tokens])
-            return np.ndarray(result)
+            return np.array(result)
