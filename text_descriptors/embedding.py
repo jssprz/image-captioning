@@ -21,5 +21,5 @@ class MeanEmbedding:
         self.out_size = embedding_dim
 
     def transform(self, texts):
-        result = [[self.embeddings[w] for w in nltk.tokenize.word_tokenize(t.lower() if self.lowercase else t)] for t in texts]
+        result = [[self.embeddings[w] for w in nltk.tokenize.word_tokenize(t)] for t in texts]
         return np.mean(np.array(result), axis=0)
