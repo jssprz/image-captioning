@@ -29,7 +29,7 @@ class WordEmbedding:
             for t in texts:
                 tokens = nltk.tokenize.word_tokenize(t.lower() if self.lowercase else t)
                 while len(tokens) < 20:
-                    tokens.append(self.embeddings['fin'])
+                    tokens.append('fin')
                 if len(tokens) > 20:
                     tokens = tokens[:20]
                 result.append([self.embeddings['algo'] if w not in self.embeddings else self.embeddings[w] for w in tokens])
