@@ -16,9 +16,10 @@ class WordEmbedding(nn.Module):
 
 
 class MeanEmbedding:
-    def __init__(self, embeddings, embedding_dim):
+    def __init__(self, embeddings, embedding_dim, lowercase=True):
         self.embeddings = embeddings
         self.out_size = embedding_dim
+        self.lowercase = lowercase
 
     def transform(self, texts):
-        return np.array([np.mean([self.embeddings[w] for w in nltk.tokenize.word_tokenize(t) if w in self.embeddings], axis=0) for t in texts])
+        return np.array([np.mean([self.embeddings[w] for w in nltk.tokenize.word_tokenize(t.lower() if self.lowercase else t) if w in self.embeddings], axis=0) for t in texts])
