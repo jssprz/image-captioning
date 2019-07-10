@@ -25,6 +25,12 @@ class WordEmbedding:
                 [self.embeddings[w] for w in nltk.tokenize.word_tokenize(t.lower() if self.lowercase else t) if
                  w in self.embeddings], axis=0) for t in texts])
         else:
-            return np.array([[self.embeddings[w] for w in
-                              nltk.tokenize.word_tokenize(t.lower() if self.lowercase else t) if w in self.embeddings]
-                             for t in texts])
+            result = []
+            for t in texts:
+                tokens = nltk.tokenize.word_tokenize(t.lower() if self.lowercase else t)
+                while len(tokens) < 20:
+                    tokens.append(self.embeddings['fin'])
+                if len(tokens) > 20:
+                    tokens = tokens[:20]
+                result.append([self.embeddings['algo'] if w not in self.embeddings else self.embeddings[w] for w in tokens])
+            return np.ndarray(result)
